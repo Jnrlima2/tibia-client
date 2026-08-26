@@ -299,21 +299,21 @@ jobs:
           $ErrorActionPreference = "Stop"
 
           $releaseExists = $true
-          gh release view $env:RELEASE_TAG --repo dudantas/tibia-client *> $null
+          gh release view $env:RELEASE_TAG --repo ${{ github.repository }} *> $null
           if ($LASTEXITCODE -ne 0) {
             $releaseExists = $false
           }
 
           if (-not $releaseExists) {
             gh release create $env:RELEASE_TAG `
-              --repo dudantas/tibia-client `
+              --repo ${{ github.repository }} `
               --verify-tag `
               --title $env:RELEASE_TAG `
               --notes $env:RELEASE_TAG
           }
           else {
             gh release edit $env:RELEASE_TAG `
-              --repo dudantas/tibia-client `
+              --repo ${{ github.repository }} `
               --title $env:RELEASE_TAG `
               --notes $env:RELEASE_TAG
           }
@@ -322,11 +322,11 @@ jobs:
             "dist\tibia-client-$env:RELEASE_TAG.zip" `
             "dist\client-11.zip" `
             "dist\tibia-8.6-extended.zip" `
-            --repo dudantas/tibia-client `
+            --repo ${{ github.repository }} `
             --clobber
 
           gh release edit $env:RELEASE_TAG `
-            --repo dudantas/tibia-client `
+            --repo ${{ github.repository }} `
             --latest
 
       - name: Summarize dry run
